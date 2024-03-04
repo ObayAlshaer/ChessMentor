@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B12AE4942B967DBC006EE795 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12AE4932B967DBC006EE795 /* Home.swift */; };
 		B13F73452B95ACCF00045CBC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13F73442B95ACCF00045CBC /* AppDelegate.swift */; };
 		B13F73472B95ACCF00045CBC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13F73462B95ACCF00045CBC /* ContentView.swift */; };
 		B13F73492B95ACD100045CBC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B13F73482B95ACD100045CBC /* Assets.xcassets */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B12AE48E2B967C2F006EE795 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B12AE4932B967DBC006EE795 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		B13F73412B95ACCF00045CBC /* ChessMentor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChessMentor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B13F73442B95ACCF00045CBC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B13F73462B95ACCF00045CBC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -94,6 +97,8 @@
 		B13F73432B95ACCF00045CBC /* ChessMentor */ = {
 			isa = PBXGroup;
 			children = (
+				B12AE48E2B967C2F006EE795 /* Info.plist */,
+				B12AE4932B967DBC006EE795 /* Home.swift */,
 				B13F73442B95ACCF00045CBC /* AppDelegate.swift */,
 				B13F73462B95ACCF00045CBC /* ContentView.swift */,
 				B13F73482B95ACD100045CBC /* Assets.xcassets */,
@@ -258,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B13F73472B95ACCF00045CBC /* ContentView.swift in Sources */,
+				B12AE4942B967DBC006EE795 /* Home.swift in Sources */,
 				B13F73452B95ACCF00045CBC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -424,9 +430,9 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ChessMentor/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChessMentor/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -454,9 +460,9 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ChessMentor/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChessMentor/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
