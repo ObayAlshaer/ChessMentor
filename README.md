@@ -19,3 +19,18 @@ ChessMentor is an innovative iOS app that leverages augmented reality (AR) techn
 ## Acknowledgements
 
 Special thanks to the contributors and maintainers of ARKit and SwiftUI for their valuable tools and frameworks.
+
+
+## Author Information
+
+| Name                | Student Number | Email                  |
+|---------------------|----------------|------------------------|
+| Mohamed-Obay Alshaer | 300170489      | malsh094@uottawa.ca    |
+| Sam Touahri         | 300234041      | otoua046@uottawa.ca    |
+
+## Client Information 
+
+| Name                | Affiliation    | Email                  |
+|---------------------|----------------|------------------------|
+|Omar Al-Dib          | X              | X                      |
+
