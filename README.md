@@ -27,6 +27,9 @@ Special thanks to the contributors and maintainers of ARKit and SwiftUI for thei
 |---------------------|----------------|------------------------|
 | Mohamed-Obay Alshaer | 300170489      | malsh094@uottawa.ca    |
 | Sam Touahri         | 300234041      | otoua046@uottawa.ca    |
+| Justin Bushfield    | 300188318        | jbush023@uottawa.ca   |
+| Samuel Rose          | X              |     X                  |
+| Anas Hammou          | 300220367      | ahamm073@uottawa.ca     |
 
 ## Client Information 
 
