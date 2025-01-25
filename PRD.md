@@ -51,7 +51,6 @@ To develop an iOS application that uses machine learning to analyze real-life ch
    - The system shall achieve a piece recognition accuracy of at least 90%.
 
 3. **Usability**
-   - The application shall achieve an average user rating of at least 4.5/5 on the App Store.
    - The system shall provide real-time feedback on chessboard detection success or failure.
 
 4. **Privacy**
