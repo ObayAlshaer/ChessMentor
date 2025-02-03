@@ -38,5 +38,5 @@ Special thanks to the contributors and maintainers of ARKit and SwiftUI for thei
 
 | Name                | Affiliation    | Email                  |
 |---------------------|----------------|------------------------|
-|Omar Al-Dib          | CUSmile (Charity) | Mromaldib@gmail.com    |
+|Omar Al-Dib          | CUSmile (Charity) | mromaldib@gmail.com    |
 
