@@ -1,10 +1,6 @@
 # ChessMentor ♟️ 
 ![image](https://github.com/user-attachments/assets/ec302138-d878-473d-9202-657dafdebc3a)
 
-## App Screenshots
-![ChessMentor](https://github.com/user-attachments/assets/ef8ec804-d0b8-4a77-90b4-594d1c490ee8)
-
-
 ChessMentor is an innovative iOS app that leverages augmented reality (AR) technology to analyze chess games and provide strategic move suggestions. By simply holding your device's camera above a chessboard, the app overlays helpful insights and recommendations directly onto the board, empowering players to make informed decisions and improve their gameplay.
 
 ## Features
