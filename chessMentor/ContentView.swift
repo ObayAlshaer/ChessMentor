@@ -61,14 +61,6 @@ struct ContentView: View {
             .ignoresSafeArea()
 
     }
-    init(){
-        for familyname in UIFont.familyNames {
-            print(familyname)
-            for fontname in UIFont.fontNames(forFamilyName: familyname) {
-                print("\t\(fontname)")
-            }
-        }
-    }
 }
 
 #Preview {
