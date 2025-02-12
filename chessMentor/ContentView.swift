@@ -8,62 +8,73 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        LazyVStack(alignment: .center, spacing:60){
-            
-            VStack (spacing: 10){
-                Image("knightIcon")
-            
-                VStack(spacing: 20){
-                    VStack(spacing:7){
-                        Text("Welcome to")
-                            .font(Font.custom("SFProDisplay-Bold", size: 40))
-                            .fontWeight(.heavy)
-                            .foregroundStyle(.white)
-                        Text("Chess Mentor")
-                            .font(Font.custom("SFProDisplay-Bold", size: 40))
-                            .fontWeight(.heavy)
-                            .foregroundStyle(Color(red: 255/255, green: 200/255, blue: 124/255, opacity: 1))
+    // Define color constants for reusability
+        let primaryColor = Color(red: 255/255, green: 200/255, blue: 124/255)
+        let accentColor = Color(red: 193/255, green: 129/255, blue: 40/255)
+        let backgroundColor = Color(red: 46/255, green: 33/255, blue: 27/255)
+
+        var body: some View {
+            LazyVStack(alignment: .center, spacing: 60) {
+                VStack(spacing: 10) {
+                    Image("knightIcon")
+                    
+                    VStack(spacing: 20) {
+                        welcomeText
+                        descriptionText
                     }
-                    VStack(){
-                        Text("AI-powered insights to elevate your chess game.")
-                            .font(Font.custom("SFProDisplay-Regular", size: 16))
-                            .foregroundStyle(.white)
                 }
-                }
-
+                
+                actionButton
+                
+                learnMoreText
             }
-            VStack(spacing:40){
-                Button("Get Started") {
-                    /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/ /*@END_MENU_TOKEN@*/
-                }.buttonBorderShape(.roundedRectangle)
-                    .frame(width: 150, height: 50)
-                    .background(
-                        LinearGradient(colors: [Color(red: 193/255, green: 129/255, blue: 40/255, opacity: 1), Color(red: 255/255, green: 200/255, blue: 124/255, opacity: 1)], startPoint: .leading, endPoint: .trailing)
-                        )
-                    .cornerRadius(13)
-                    .foregroundColor(.white)
-                    .font(Font.custom("SFProDisplay-Regular", size: 24))
-
-            }
-            
-            VStack(){
-                Text("Learn more...")
-                    .font(Font.custom("SFProDisplay-Regular", size: 17))
-                    .underline()
-                    .foregroundStyle(Color(red: 255/255, green: 200/255, blue: 124/255, opacity: 1))
-        }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background {
-                Color(red: 46 / 255, green: 33 / 255, blue: 27 / 255, opacity: 1)
-            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(backgroundColor)
             .ignoresSafeArea()
+        }
+        
+        // MARK: - Subviews
 
+        private var welcomeText: some View {
+            VStack(spacing: 7) {
+                Text("Welcome to")
+                    .font(Font.custom("SFProDisplay-Bold", size: 40))
+                    .fontWeight(.heavy)
+                    .foregroundStyle(.white)
+                
+                Text("Chess Mentor")
+                    .font(Font.custom("SFProDisplay-Bold", size: 40))
+                    .fontWeight(.heavy)
+                    .foregroundStyle(primaryColor)
+            }
+        }
+
+        private var descriptionText: some View {
+            Text("AI-powered insights to elevate your chess game.")
+                .font(Font.custom("SFProDisplay-Regular", size: 16))
+                .foregroundStyle(.white)
+        }
+
+        private var actionButton: some View {
+            Button("Get Started") {
+                // Action for "Get Started" button
+            }
+            .buttonBorderShape(.roundedRectangle)
+            .frame(width: 150, height: 50)
+            .background(LinearGradient(colors: [accentColor, primaryColor], startPoint: .leading, endPoint: .trailing))
+            .cornerRadius(13)
+            .foregroundColor(.white)
+            .font(Font.custom("SFProDisplay-Regular", size: 24))
+        }
+
+        private var learnMoreText: some View {
+            Text("Learn more...")
+                .font(Font.custom("SFProDisplay-Regular", size: 17))
+                .underline()
+                .foregroundStyle(primaryColor)
+        }
     }
-}
 
-#Preview {
-    ContentView()
-}
-
+    #Preview {
+        ContentView()
+    }

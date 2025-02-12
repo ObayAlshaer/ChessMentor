@@ -24,9 +24,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A82E7DFE2D57A1F700DBE5A2 /* chessMentor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = chessMentor.app; path = "/Users/anas/Desktop/chessMentor/Untitled/ChessMentor/build/Debug-iphoneos/chessMentor.app"; sourceTree = "<absolute>"; };
-		A82E7E0E2D57A1FA00DBE5A2 /* chessMentorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = chessMentorTests.xctest; path = "/Users/anas/Desktop/chessMentor/Untitled/ChessMentor/build/Debug-iphoneos/chessMentor.app/PlugIns/chessMentorTests.xctest"; sourceTree = "<absolute>"; };
-		A82E7E182D57A1FA00DBE5A2 /* chessMentorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = chessMentorUITests.xctest; path = "/Users/anas/Desktop/chessMentor/Untitled/ChessMentor/build/Debug-iphoneos/chessMentorUITests-Runner.app/PlugIns/chessMentorUITests.xctest"; sourceTree = "<absolute>"; };
+		A82E7EA32D5BDC7300DBE5A2 /* chessMentor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chessMentor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A82E7EA42D5BDC7300DBE5A2 /* chessMentorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chessMentorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A82E7EA52D5BDC7300DBE5A2 /* chessMentorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chessMentorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -91,6 +91,9 @@
 				A82E7E002D57A1F700DBE5A2 /* chessMentor */,
 				A82E7E112D57A1FA00DBE5A2 /* chessMentorTests */,
 				A82E7E1B2D57A1FA00DBE5A2 /* chessMentorUITests */,
+				A82E7EA32D5BDC7300DBE5A2 /* chessMentor.app */,
+				A82E7EA42D5BDC7300DBE5A2 /* chessMentorTests.xctest */,
+				A82E7EA52D5BDC7300DBE5A2 /* chessMentorUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -116,7 +119,7 @@
 			packageProductDependencies = (
 			);
 			productName = chessMentor;
-			productReference = A82E7DFE2D57A1F700DBE5A2 /* chessMentor.app */;
+			productReference = A82E7EA32D5BDC7300DBE5A2 /* chessMentor.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A82E7E0D2D57A1FA00DBE5A2 /* chessMentorTests */ = {
@@ -139,7 +142,7 @@
 			packageProductDependencies = (
 			);
 			productName = chessMentorTests;
-			productReference = A82E7E0E2D57A1FA00DBE5A2 /* chessMentorTests.xctest */;
+			productReference = A82E7EA42D5BDC7300DBE5A2 /* chessMentorTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		A82E7E172D57A1FA00DBE5A2 /* chessMentorUITests */ = {
@@ -162,7 +165,7 @@
 			packageProductDependencies = (
 			);
 			productName = chessMentorUITests;
-			productReference = A82E7E182D57A1FA00DBE5A2 /* chessMentorUITests.xctest */;
+			productReference = A82E7EA52D5BDC7300DBE5A2 /* chessMentorUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
