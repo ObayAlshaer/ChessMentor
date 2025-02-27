@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct LoginView: View {
     // Define color constants for reusability
         let primaryColor = Color(red: 255/255, green: 200/255, blue: 124/255)
         let accentColor = Color(red: 193/255, green: 129/255, blue: 40/255)
@@ -76,5 +76,5 @@ struct ContentView: View {
     }
 
     #Preview {
-        ContentView()
+        LoginView()
     }
