@@ -1,3 +1,4 @@
 [submodule "ml"]
 	path = ml
 	url = https://github.com/ObayAlshaer/ChessMentor-ML.git
+	branch = main
