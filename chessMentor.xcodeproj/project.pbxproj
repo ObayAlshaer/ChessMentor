@@ -30,6 +30,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		449F77022D973F7100AAAAD7 /* Exceptions for "Views" folder in "chessMentor" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				LoginView.swift,
+				ResultsView.swift,
+				ScanningView.swift,
+			);
+			target = A82E7DFD2D57A1F700DBE5A2 /* chessMentor */;
+		};
 		A82E7E4B2D585F0E00DBE5A2 /* Exceptions for "chessMentor" folder in "chessMentor" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -40,6 +49,14 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		449F77012D973F6900AAAAD7 /* Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				449F77022D973F7100AAAAD7 /* Exceptions for "Views" folder in "chessMentor" target */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		A82E7E002D57A1F700DBE5A2 /* chessMentor */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -88,6 +105,7 @@
 		A82E7DF52D57A1F700DBE5A2 = {
 			isa = PBXGroup;
 			children = (
+				449F77012D973F6900AAAAD7 /* Views */,
 				A82E7E002D57A1F700DBE5A2 /* chessMentor */,
 				A82E7E112D57A1FA00DBE5A2 /* chessMentorTests */,
 				A82E7E1B2D57A1FA00DBE5A2 /* chessMentorUITests */,
@@ -401,6 +419,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"chessMentor/Preview Content\"";
+				DEVELOPMENT_TEAM = 2KX24F547H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chessMentor/Info.plist;
@@ -430,6 +449,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"chessMentor/Preview Content\"";
+				DEVELOPMENT_TEAM = 2KX24F547H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chessMentor/Info.plist;

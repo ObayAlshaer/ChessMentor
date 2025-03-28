@@ -3,42 +3,30 @@ import AVFoundation
 
 struct ScanningView: View {
     
-    @State private var isFlashOn = false
-    @State private var isCapturing = false
+    //Camera
+    @StateObject private var camera = CameraModel()
 
-    
-    
     //Images
-    let placeholderImage = Image("IMG_4293")
     let crosshairImage = Image("Crosshairs")
     
-    // Setup camera session and start capture
-    func setupCamera() {
-        //TODO
-    }
-    
-    // Flash toggle
-    func toggleFlash() {
-        //TODO
-    }
-    
-    //Capture Image
-    func captureImage() {
-        //TODO
-    }
-    
-    func openGallery() {
-        //TODO
-    }
+    //COLORS
+    let primaryColor = Color(red: 255/255, green: 200/255, blue: 124/255)
+    let accentColor = Color(red: 193/255, green: 129/255, blue: 40/255)
+    let backgroundColor = Color(red: 46/255, green: 33/255, blue: 27/255)
     
     var body: some View {
         ZStack {
-            //TODO: Replace with camera feed
-            placeholderImage
-                .resizable()
-                .scaledToFill()
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                .clipped()
+            if let capturedPhoto = camera.capturedPhoto {
+                Image(uiImage: capturedPhoto)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .edgesIgnoringSafeArea(.all)
+            } else if camera.isPreviewReady {
+                CameraPreview(camera: camera)
+                    .edgesIgnoringSafeArea(.all)
+            } else {
+                Text("Loading camera...")
+            }
 
             VStack {
                 RoundedRectangle(cornerRadius: 16 )
@@ -63,7 +51,7 @@ struct ScanningView: View {
                 HStack {
                     // Gallery Button
                     Button(action: {
-                        openGallery()
+                        //openGallery()
                     }) {
                         Image(systemName: "photo.on.rectangle.fill")
                             .font(.title)
@@ -71,9 +59,7 @@ struct ScanningView: View {
                             .padding(50)
                     }
                     // Capture Button
-                    Button(action: {
-                        captureImage()
-                    }) {
+                    Button(action: camera.takePicture) {
                         ZStack {
                             Circle()
                                 .stroke(Color.white, lineWidth: 3)
@@ -83,11 +69,15 @@ struct ScanningView: View {
                                 .frame(width: 56, height: 56)
                         }
                     }
+                
+                    NavigationLink(destination: ResultsView(camera: camera), isActive: $camera.isTaken) {
+                                            EmptyView()
+                                        }
                     // Flash Button
                     Button(action: {
-                        toggleFlash()
+                        //toggleFlash()
                     }) {
-                        Image(systemName: isFlashOn ? "bolt.fill" : "bolt.slash.fill")
+                        Image("bolt.slash.fill")
                             .font(.title)
                             .foregroundColor(.white)
                             .padding(50)
@@ -97,10 +87,18 @@ struct ScanningView: View {
             }
         }
         .onAppear {
-            setupCamera()
+            camera.check()
         }
-        .onDisappear {
-            //TODO: End session
+        .alert(isPresented: $camera.alert) {
+            Alert(
+                title: Text("Camera access denied"),
+                message: Text("Please enable camera access in settings to continue"),
+                primaryButton: .default(Text("Settings"), action: {
+                    if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(settingsURL)
+                    }
+                }), secondaryButton: .cancel()
+            )
         }
     }
 }
