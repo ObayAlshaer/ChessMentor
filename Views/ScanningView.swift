@@ -9,6 +9,11 @@ struct ScanningView: View {
     //Images
     let crosshairImage = Image("Crosshairs")
     
+    //COLORS
+    let primaryColor = Color(red: 255/255, green: 200/255, blue: 124/255)
+    let accentColor = Color(red: 193/255, green: 129/255, blue: 40/255)
+    let backgroundColor = Color(red: 46/255, green: 33/255, blue: 27/255)
+    
     var body: some View {
         ZStack {
             if let capturedPhoto = camera.capturedPhoto {
@@ -21,7 +26,6 @@ struct ScanningView: View {
                     .edgesIgnoringSafeArea(.all)
             } else {
                 Text("Loading camera...")
-                    .foregroundColor(.white)
             }
 
             VStack {
@@ -65,6 +69,10 @@ struct ScanningView: View {
                                 .frame(width: 56, height: 56)
                         }
                     }
+                
+                    NavigationLink(destination: ResultsView(camera: camera), isActive: $camera.isTaken) {
+                                            EmptyView()
+                                        }
                     // Flash Button
                     Button(action: {
                         //toggleFlash()

@@ -17,6 +17,7 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     @Published var isPreviewReady: Bool = false
     @Published var capturedPhoto: UIImage? = nil
     @Published var currentPosition: AVCaptureDevice.Position = .back
+    @Published var isCameraAvailable: Bool = false
     
     func check(){
         switch AVCaptureDevice.authorizationStatus(for: .video) {
@@ -56,10 +57,11 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             self.session.beginConfiguration()
             var device: AVCaptureDevice?
             
-            if let dualCamera = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) ??
+            if let camera = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) ??
                 AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
-                print("Using dual camera")
-                device = dualCamera
+                print("Using camera")
+                device = camera
+                isCameraAvailable = true
             } else {
                 print("Failed to get the AV Capture Device")
                 self.session.commitConfiguration()
@@ -184,6 +186,16 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
         }
         
         session.commitConfiguration()
+    }
+}
+
+extension CameraModel {
+    // Mock setup for previews
+    static func mock() -> CameraModel {
+        let model = CameraModel()
+        model.capturedPhoto = UIImage(named: "samplePhoto") // Provide a sample photo for previews
+        model.isCameraAvailable = true // Simulate a camera being available
+        return model
     }
 }
 
