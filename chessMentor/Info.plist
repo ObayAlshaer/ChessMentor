@@ -4,6 +4,12 @@
 <dict>
 	<key>NSCameraUsageDescription</key>
 	<string>We need to access your camera to scan the chessboard</string>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We save the cropped chessboard image so you can verify detections.</string>
+	<key>CFBundleExecutable</key>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SFPRODISPLAYBOLD.OTF</string>
