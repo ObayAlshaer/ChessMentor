@@ -1,11 +1,14 @@
 import SwiftUI
 import AVFoundation
-
+import PhotosUI
 struct ScanningView: View {
     
     //Camera
     @StateObject private var camera = CameraModel()
 
+    // holds the picked item from the photo library
+        @State private var pickedItem: PhotosPickerItem? = nil
+    
     //Images
     let crosshairImage = Image("Crosshairs")
     
@@ -50,29 +53,26 @@ struct ScanningView: View {
                 // Bottom control buttons
                 HStack {
                     // Gallery Button
-                    Button(action: {
-                        //openGallery()
-                    }) {
-                        Image(systemName: "photo.on.rectangle.fill")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .padding(50)
-                    }
-                    // Capture Button
-                    Button(action: camera.takePicture) {
-                        ZStack {
-                            Circle()
-                                .stroke(Color.white, lineWidth: 3)
-                                .frame(width: 67, height: 67)
-                            Circle()
-                                .fill(Color.white)
-                                .frame(width: 56, height: 56)
-                        }
-                    }
-                
-                    NavigationLink(destination: ResultsView(camera: camera), isActive: $camera.isTaken) {
-                                            EmptyView()
+                    PhotosPicker(selection: $pickedItem, matching: .images, photoLibrary: .shared()) {
+                                            Image(systemName: "photo.on.rectangle.fill")
+                                                .font(.title)
+                                                .foregroundColor(.white)
+                                                .padding(50)
                                         }
+
+                                        // Capture Button
+                                        Button(action: camera.takePicture) {
+                                            ZStack {
+                                                Circle()
+                                                    .stroke(Color.white, lineWidth: 3)
+                                                    .frame(width: 67, height: 67)
+                                                Circle()
+                                                    .fill(Color.white)
+                                                    .frame(width: 56, height: 56)
+                                            }
+                                        }
+                
+
                     // Flash Button
                     Button(action: {
                         //toggleFlash()
@@ -100,6 +100,26 @@ struct ScanningView: View {
                 }), secondaryButton: .cancel()
             )
         }
+        
+        .onChange(of: pickedItem) { oldValue, newValue in
+                    guard let item = newValue else { return }
+                    Task {
+                        if let data = try? await item.loadTransferable(type: Data.self),
+                           let image = UIImage(data: data) {
+                            camera.capturedPhoto = image
+                            camera.isTaken = true     // triggers navigation below
+                            camera.stopSession()      // optional: freeze preview behind results
+                        }
+                        pickedItem = nil
+                    }
+                }
+        .navigationDestination(isPresented: $camera.isTaken) {
+                    ResultsView(camera: camera)
+                        .onDisappear {
+                            // If you already added this earlier, keep it—it fixes the "Back" issue:
+                            camera.retakePicture()
+                        }
+                }
     }
 }
 

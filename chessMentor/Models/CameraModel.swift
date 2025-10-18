@@ -1,10 +1,3 @@
-//
-//  CameraModel.swift
-//  chessMentor
-//
-//  Created by Justin Bushfield on 2025-03-28.
-//
-
 import SwiftUI
 import AVFoundation
 
@@ -122,34 +115,35 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     
     func takePicture() {
         let settings = AVCapturePhotoSettings()
-        
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.main.async {
             self.output.capturePhoto(with: settings, delegate: self)
-            
-            DispatchQueue.main.async {
-                withAnimation {
-                    self.isTaken.toggle()
-                }
-            }
         }
     }
     
     func retakePicture() {
         self.capturedPhoto = nil
         self.isTaken = false
-        
         startSession()
     }
     
+    //Set the image first, THEN set isTaken = true (on main).
     func photoOutput(_ output:AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let error = error {
             print("Error capturing photo: \(error.localizedDescription)")
             return
         }
         
-        if let photoData = photo.fileDataRepresentation() {
-            self.capturedPhoto = UIImage(data: photoData)
-            print("Photo captured successfully")
+        guard let photoData = photo.fileDataRepresentation(),
+              let image = UIImage(data: photoData) else {
+            print("No image data")
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.capturedPhoto = image    // image exists now
+            self.isTaken = true           // now safe to navigate
+            // (optional) self.stopSession()
+            print("Photo captured successfully & navigation triggered")
         }
     }
     
@@ -229,8 +223,4 @@ struct CameraPreview: UIViewRepresentable {
             }
         }
     }
-}
-
-#Preview {
-    ScanningView()
 }

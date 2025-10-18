@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  chessMentor
-//
-//  Created by Anas Hammou on 2025-02-08.
-//
-
 import SwiftUI
 
 struct LoginView: View {
@@ -16,7 +9,7 @@ struct LoginView: View {
     @State private var path = NavigationPath()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .center, spacing: 60) {
                 VStack(spacing: 10) {
                     Image("knightIcon")
