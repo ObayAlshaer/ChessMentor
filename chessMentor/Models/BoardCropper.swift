@@ -1,97 +1,150 @@
 import Foundation
-import Vision
-import CoreImage
-import CoreImage.CIFilterBuiltins
 import UIKit
 import OSLog
 
 private let cropLog = Logger(subsystem: Bundle.main.bundleIdentifier ?? "chessmentor",
-                             category: "BoardCropper")
+                             category: "BoardCropperRF")
 
+/// Crops the board using a Roboflow board-detection model (no Vision, no warp).
 final class BoardCropper {
-    private let context = CIContext()
-    private let outputSize = CGSize(width: 800, height: 800)
 
-    enum CropError: Int, LocalizedError {
-        case badImage = 0, noRectangleFound = 1, cantWarp = 2, cantRender = 3
+    enum CropError: LocalizedError {
+        case badImage
+        case noDetection
+
         var errorDescription: String? {
             switch self {
-            case .badImage:         return "Could not create CIImage from input."
-            case .noRectangleFound: return "No board-like rectangle found by Vision."
-            case .cantWarp:         return "Perspective correction failed."
-            case .cantRender:       return "Failed to render corrected image."
+            case .badImage:   return "Could not create an image from input."
+            case .noDetection:return "No chessboard detected."
             }
         }
     }
 
+    // MARK: config
+    private let rf: RoboflowClient
+    private let boardModelId: String
+    private let outputSize = CGSize(width: 800, height: 800)
+    private let maxLongSide: CGFloat
+    private let padFrac: CGFloat
+    private let enforceSquare: Bool
+
+    /// - Parameters:
+    ///   - apiKey: Roboflow API key
+    ///   - boardModelId: e.g. "chessboard-detection-x5kxd/1"
+    ///   - confidence: detector threshold (0.2–0.3 good)
+    ///   - overlap: NMS IoU (0.15–0.25 good)
+    ///   - maxLongSide: optional downscale before upload (keeps things fast)
+    ///   - padFrac: add a little padding around the detected box (e.g. 5%)
+    ///   - enforceSquare: expand to a square crop (recommended for 8×8 mapping)
+    init(apiKey: String,
+         boardModelId: String = "chessboard-detection-x5kxd/1",
+         confidence: Double = 0.25,
+         overlap: Double = 0.20,
+         maxLongSide: CGFloat = 1280,
+         padFrac: CGFloat = 0.05,
+         enforceSquare: Bool = true)
+    {
+        self.boardModelId = boardModelId
+        self.maxLongSide = maxLongSide
+        self.padFrac = padFrac
+        self.enforceSquare = enforceSquare
+        // dedicated RF client for the board model
+        self.rf = RoboflowClient(apiKey: apiKey,
+                                 modelId: boardModelId,
+                                 confidence: confidence,
+                                 overlap: overlap)
+    }
+
+    /// Crop the board and return a square 800×800 image.
     func crop(_ image: UIImage) throws -> UIImage {
-        let src = image.fixedOrientationUp()
-        cropLog.info("Crop start. input=\(Int(src.size.width))x\(Int(src.size.height))")
-        guard let cg = src.cgImage else { throw CropError.badImage }
-        let ci = CIImage(cgImage: cg)
+        // 1) Canonicalize (EXIF/rotation) and lightly downscale
+        let src = image.fixedOrientationUp().downscaledIfNeeded(maxLongSide: maxLongSide)
+        cropLog.info("RF crop start. input=\(Int(src.size.width))x\(Int(src.size.height)) model=\(self.boardModelId, privacy: .public)")
 
-        // 1) detect rectangle
-        let req = VNDetectRectanglesRequest()
-        req.minimumConfidence = 0.5
-        req.maximumObservations = 5
-        req.minimumAspectRatio = 0.70
-        req.maximumAspectRatio = 1.30
-        req.minimumSize = 0.20
-
-        try VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
-        guard let r = (req.results as? [VNRectangleObservation])?.first else {
-            cropLog.error("No rectangle found"); throw CropError.noRectangleFound
+        // 2) Detect board on THIS SAME image (our RF client rescales preds to this size)
+        let preds = try awaitDetect(on: src)
+        guard let best = preds.max(by: { ($0.confidence ?? 0) < ($1.confidence ?? 0) }) else {
+            cropLog.error("No detections from Roboflow.")
+            throw CropError.noDetection
         }
 
-        // 2) convert normalized → pixel coords
-        let pts: [CGPoint] = [
-            r.topLeft.applying(src.size),
-            r.topRight.applying(src.size),
-            r.bottomRight.applying(src.size),
-            r.bottomLeft.applying(src.size),
-        ]
+        // 3) Build padded rect from center/width/height (already in our image coords)
+        var rect = CGRect(x: best.x - best.width/2,
+                          y: best.y - best.height/2,
+                          width: best.width,
+                          height: best.height)
 
-        // 3) Python-like ordering of corners
-        let ordered = orderPoints(pts) // [tl, tr, br, bl]
-        let tl = ordered[0], tr = ordered[1], br = ordered[2], bl = ordered[3]
-        cropLog.debug("TL(\(Int(tl.x)),\(Int(tl.y))) TR(\(Int(tr.x)),\(Int(tr.y))) BR(\(Int(br.x)),\(Int(br.y))) BL(\(Int(bl.x)),\(Int(bl.y)))")
+        let padW = rect.width * padFrac
+        let padH = rect.height * padFrac
+        rect = rect.insetBy(dx: -padW, dy: -padH)
 
-        // 4) CIPerspectiveCorrection with explicit TL/TR/BR/BL → 800x800
-        let f = CIFilter.perspectiveCorrection()
-        f.inputImage  = ci
-        f.topLeft     = br
-        f.topRight    = bl
-        f.bottomRight = tl
-        f.bottomLeft  = tr
-        guard let corrected = f.outputImage else { throw CropError.cantWarp }
-
-        guard let correctedCG = context.createCGImage(corrected, from: corrected.extent) else {
-            throw CropError.cantRender
+        // 4) Expand to square if requested (centered on detection)
+        if enforceSquare {
+            let side = max(rect.width, rect.height)
+            let cx = rect.midX, cy = rect.midY
+            rect = CGRect(x: cx - side/2, y: cy - side/2, width: side, height: side)
         }
-        let correctedUI = UIImage(cgImage: correctedCG, scale: 1, orientation: .up)
-        let scaled = correctedUI.scaledTo(size: outputSize).flippedHorizontally()
-        cropLog.info("Crop success. output=\(Int(scaled.size.width))x\(Int(scaled.size.height))")
+
+        // 5) Clamp to image bounds
+        rect = rect.clamped(to: CGRect(origin: .zero, size: src.size))
+
+        guard rect.width > 2, rect.height > 2 else {
+            cropLog.error("Crop rect too small after clamp: \(NSCoder.string(for: rect))")
+            throw CropError.noDetection
+        }
+
+        // 6) Render crop and scale to 800×800 (no warp, no flips)
+        let cropped = UIGraphicsImageRenderer(size: rect.size).image { _ in
+            src.draw(in: CGRect(x: -rect.origin.x,
+                                y: -rect.origin.y,
+                                width: src.size.width,
+                                height: src.size.height))
+        }
+        let scaled = cropped.resized(to: outputSize)
+
+        cropLog.info("RF crop success. output=\(Int(scaled.size.width))x\(Int(scaled.size.height))")
         return scaled
     }
 
-    /// Mirrors Python's `order_points` (sum/diff trick) to fix orientation.
-    private func orderPoints(_ pts: [CGPoint]) -> [CGPoint] {
-        precondition(pts.count == 4)
-        // sum = x+y; min→TL, max→BR
-        let sums = pts.map { $0.x + $0.y }
-        let tl = pts[sums.firstIndex(of: sums.min()!)!]
-        let br = pts[sums.firstIndex(of: sums.max()!)!]
-        // diff = x - y; min→TR, max→BL  (note: Python uses y - x; equivalent up to sign)
-        let diffs = pts.map { $0.y - $0.x }
-        let tr = pts[diffs.firstIndex(of: diffs.min()!)!]
-        let bl = pts[diffs.firstIndex(of: diffs.max()!)!]
-        return [tl, tr, br, bl]
+    // MARK: - Private
+
+    /// Use async/await safely from a non-async API surface.
+    private func awaitDetect(on image: UIImage) throws -> [Prediction] {
+        var out: Result<[Prediction], Error>!
+        let sem = DispatchSemaphore(value: 0)
+        Task {
+            do {
+                let preds = try await rf.detect(on: image)
+                out = .success(preds)
+            } catch {
+                out = .failure(error)
+            }
+            sem.signal()
+        }
+        sem.wait()
+        switch out! {
+        case .success(let p): return p
+        case .failure(let e): throw e
+        }
     }
 }
 
-private extension CGPoint {
-    func applying(_ size: CGSize) -> CGPoint {
-        CGPoint(x: x * size.width, y: (1 - y) * size.height)
+// MARK: - Helpers
+
+private extension CGRect {
+    func clamped(to bounds: CGRect) -> CGRect {
+        var r = self
+        if r.minX < bounds.minX { r.origin.x = bounds.minX }
+        if r.minY < bounds.minY { r.origin.y = bounds.minY }
+        if r.maxX > bounds.maxX { r.origin.x = bounds.maxX - r.width }
+        if r.maxY > bounds.maxY { r.origin.y = bounds.maxY - r.height }
+        // in case width/height exceed bounds
+        r.size.width  = min(r.width,  bounds.width)
+        r.size.height = min(r.height, bounds.height)
+        // re-clamp origin after shrinking
+        if r.minX < bounds.minX { r.origin.x = bounds.minX }
+        if r.minY < bounds.minY { r.origin.y = bounds.minY }
+        return r
     }
 }
 
@@ -102,19 +155,16 @@ private extension UIImage {
             self.draw(in: CGRect(origin: .zero, size: size))
         }
     }
-    func scaledTo(size: CGSize) -> UIImage {
-        UIGraphicsImageRenderer(size: size).image { _ in
-            self.draw(in: CGRect(origin: .zero, size: size))
-        }
+    func downscaledIfNeeded(maxLongSide: CGFloat) -> UIImage {
+        let longSide = max(size.width, size.height)
+        guard longSide > maxLongSide, longSide > 0 else { return self }
+        let scale = maxLongSide / longSide
+        let newSize = CGSize(width: size.width * scale, height: size.height * scale)
+        return resized(to: newSize)
     }
-}
-private extension UIImage {
-    func flippedHorizontally() -> UIImage {
-        let renderer = UIGraphicsImageRenderer(size: size)
-        return renderer.image { ctx in
-            ctx.cgContext.translateBy(x: size.width, y: 0)
-            ctx.cgContext.scaleBy(x: -1, y: 1)
-            self.draw(in: CGRect(origin: .zero, size: size))
+    func resized(to newSize: CGSize) -> UIImage {
+        UIGraphicsImageRenderer(size: newSize).image { _ in
+            self.draw(in: CGRect(origin: .zero, size: newSize))
         }
     }
 }

@@ -21,7 +21,7 @@ final class ResultsViewModel: ObservableObject {
     @Published var phase: Phase = .idle
 
     // Services
-    private let cropper = BoardCropper()
+    private let cropper: BoardCropper
     private let roboflow: RoboflowClient
     private let fenBuilder = FenBuilder()
     private let engine = StockfishService()
@@ -30,14 +30,22 @@ final class ResultsViewModel: ObservableObject {
     /// Tune confidence/overlap here if you want (0.25–0.35 is a good start for confidence)
     init(roboflowApiKey: String,
          modelId: String = "chessbot-v2/1",
-         confidence: Double = 0.25,
-         overlap: Double = 0.12)
-    {
+         confidence: Double = 0.30,
+         overlap: Double = 0.50) {
         self.roboflow = RoboflowClient(apiKey: roboflowApiKey,
                                        modelId: modelId,
                                        confidence: confidence,
                                        overlap: overlap)
+        // 👇 new: board detector cropper (tweak thresholds if you like)
+        self.cropper = BoardCropper(apiKey: roboflowApiKey,
+                                    boardModelId: "chessboard-detection-x5kxd/1",
+                                    confidence: 0.25,
+                                    overlap: 0.20,
+                                    maxLongSide: 1280,
+                                    padFrac: 0.03,
+                                    enforceSquare: true)
     }
+
 
     func run(with image: UIImage) {
         Task {
