@@ -60,20 +60,34 @@ final class ResultsViewModel: ObservableObject {
 
                 // 2) Detect
                 phase = .detecting
-                let preds = try await roboflow.detect(on: cropped)
-                vmLog.info("Detections: \(preds.count, privacy: .public)")
+                let raw = try await roboflow.detect(on: cropped)
+                vmLog.info("Raw detections: \(raw.count, privacy: .public)")
 
-                // class breakdown (helps debug model output)
+                // 🔎 NEW: filter out off-board / tiny / huge / low-conf boxes
+                let filter = PieceFilter(
+                    minConfidence: 0.30,
+                    minConfidenceKing: 0.22,
+                    edgeTrimSquares: 0.12,    // tighten to 0.20 if side UI still leaks in
+                    minSizeFrac: 0.35,
+                    maxSizeFrac: 1.60
+                )
+                let preds = filter.apply(raw, imageSize: cropped.size)
+                vmLog.info("Filtered detections: \(preds.count, privacy: .public)")
+
+                // (optional) save both previews to Photos to compare
+                if let rawPreview = drawDetectionPreview(on: cropped, predictions: raw) {
+                    PhotoSaver.saveToLibrary(rawPreview)   // "raw"
+                }
+                if let filteredPreview = drawDetectionPreview(on: cropped, predictions: preds) {
+                    PhotoSaver.saveToLibrary(filteredPreview) // "filtered"
+                }
+
+                // class breakdown (of FILTERED)
                 let grouped = Dictionary(grouping: preds, by: { $0.class })
                     .map { "\($0.key): \($0.value.count)" }
                     .sorted()
-                vmLog.info("Class breakdown → \(grouped.joined(separator: ", "), privacy: .public)")
+                vmLog.info("Class breakdown (filtered) → \(grouped.joined(separator: ", "), privacy: .public)")
 
-                // Save a detection preview (grid + boxes + labels)
-                if let preview = drawDetectionPreview(on: cropped, predictions: preds) {
-                    PhotoSaver.saveToLibrary(preview)
-                    vmLog.info("Saved detection preview to Photos.")
-                }
 
                 // 3) FEN
                 phase = .generatingFEN
