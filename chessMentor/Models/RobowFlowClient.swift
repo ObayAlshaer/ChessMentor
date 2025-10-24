@@ -8,7 +8,7 @@ private let rfLog = Logger(subsystem: Bundle.main.bundleIdentifier ?? "chessment
 
 // Your app-wide model used elsewhere
 
-final class RoboflowClient {
+class RoboflowClient {
 
     // Raw response structs from Roboflow (include image size for scaling)
     private struct RFResponse: Decodable {

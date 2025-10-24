@@ -60,6 +60,7 @@ struct LoginView: View {
         .cornerRadius(13)
         .foregroundColor(.white)
         .font(Font.custom("SFProDisplay-Regular", size: 24))
+        .accessibilityIdentifier("GetStartedButton")
     }
 
     private var learnMoreText: some View {

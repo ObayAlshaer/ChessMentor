@@ -6,7 +6,7 @@ private let cropLog = Logger(subsystem: Bundle.main.bundleIdentifier ?? "chessme
                              category: "BoardCropperRF")
 
 /// Crops the board using a Roboflow board-detection model (no Vision, no warp).
-final class BoardCropper {
+class BoardCropper {
 
     enum CropError: LocalizedError {
         case badImage

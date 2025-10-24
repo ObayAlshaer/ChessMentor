@@ -5,7 +5,7 @@ private let sfLog = Logger(subsystem: Bundle.main.bundleIdentifier ?? "chessment
                            category: "Stockfish")
 
 
-final class StockfishService {
+class StockfishService {
     private let session: URLSession
     private let endpoint = URL(string: "https://stockfish-api-jzrn.onrender.com/get-best-move")!
 

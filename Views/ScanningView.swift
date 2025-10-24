@@ -88,6 +88,14 @@ struct ScanningView: View {
         }
         .onAppear {
             camera.check()
+                #if DEBUG
+                if ProcessInfo.processInfo.arguments.contains("UITEST_MODE") {
+                    if let img = UIImage(named: "ui_test_board") {   // add any 800x800 board to Assets with this name
+                        camera.capturedPhoto = img
+                        camera.isTaken = true
+                    }
+                }
+                #endif
         }
         .alert(isPresented: $camera.alert) {
             Alert(
