@@ -7,6 +7,7 @@ private let vmLog = Logger(subsystem: Bundle.main.bundleIdentifier ?? "chessment
 
 @MainActor
 final class ResultsViewModel: ObservableObject {
+    
     enum Phase {
         case idle
         case cropping
@@ -24,8 +25,10 @@ final class ResultsViewModel: ObservableObject {
     private let cropper: BoardCropper
     private let roboflow: RoboflowClient
     private let fenBuilder = FenBuilder()
-    private let engine = StockfishService()
-    private let drawer = ArrowDrawer()
+    private let engine: StockfishService        // ← no default here
+    private let drawer: ArrowDrawer 
+    private let saveDebugImages: Bool           // ← no default here
+
 
     /// Tune confidence/overlap here if you want (0.25–0.35 is a good start for confidence)
     init(roboflowApiKey: String,
@@ -44,7 +47,25 @@ final class ResultsViewModel: ObservableObject {
                                     maxLongSide: 1280,
                                     padFrac: 0.03,
                                     enforceSquare: true)
+        self.engine = StockfishService()        // ← assign here
+        self.drawer = ArrowDrawer()             // ← assign here
+        self.saveDebugImages = true             // ← assign here
     }
+    #if DEBUG
+    /// Testing initializer (DI for mocks)
+    init(cropper: BoardCropper,
+         roboflow: RoboflowClient,
+         engine: StockfishService,
+         drawer: ArrowDrawer,
+         saveDebugImages: Bool = false) {
+
+        self.cropper = cropper
+        self.roboflow = roboflow
+        self.engine  = engine
+        self.drawer  = drawer
+        self.saveDebugImages = saveDebugImages
+    }
+    #endif
 
 
     func run(with image: UIImage) {

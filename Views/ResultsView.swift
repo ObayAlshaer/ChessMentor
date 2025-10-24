@@ -1,13 +1,11 @@
-// ResultsView.swift  (replace body with this version)
 import SwiftUI
 
 struct ResultsView: View {
     @ObservedObject var camera: CameraModel
-
     @StateObject private var vm = ResultsViewModel(roboflowApiKey: "SxJbV6TVzYIVMe0brpAk")
 
     var body: some View {
-        Group {
+        VStack {
             switch vm.phase {
             case .idle:
                 Text("Preparing…")
@@ -40,16 +38,8 @@ struct ResultsView: View {
                             .aspectRatio(contentMode: .fit)
                             .cornerRadius(12)
                             .shadow(radius: 4)
-
-//                        if let overlay = result.overlays {
-//                            Text("Detections Preview")
-//                                .font(.subheadline)
-//                            Image(uiImage: overlay)
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-//                                .cornerRadius(12)
-//                        }
-                    }.padding()
+                    }
+                    .padding()
                 }
 
             case .failed(let message):
@@ -59,10 +49,13 @@ struct ResultsView: View {
                 }
             }
         }
+        .accessibilityIdentifier("results_root") // the element the UITest waits for
         .navigationBarTitleDisplayMode(.inline)
-        .onDisappear {
-            // keep your existing back-reset behavior
-            camera.retakePicture()
-        }
+        .onDisappear { camera.retakePicture() }
     }
 }
+
+#Preview {
+    ResultsView(camera: CameraModel.mock())
+}
+

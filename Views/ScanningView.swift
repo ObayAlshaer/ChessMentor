@@ -87,16 +87,28 @@ struct ScanningView: View {
             }
         }
         .onAppear {
-            camera.check()
-                #if DEBUG
-                if ProcessInfo.processInfo.arguments.contains("UITEST_MODE") {
-                    if let img = UIImage(named: "ui_test_board") {   // add any 800x800 board to Assets with this name
-                        camera.capturedPhoto = img
-                        camera.isTaken = true
+            #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("UITEST_RESULTS_NOW") {
+                // Skip camera entirely and jump to ResultsView with a placeholder image.
+                DispatchQueue.main.async {
+                    self.camera.alert = false
+                    self.camera.isPreviewReady = false
+                    // Use a plain placeholder — no asset required
+                    let r = UIGraphicsImageRenderer(size: CGSize(width: 800, height: 800))
+                    let img = r.image { ctx in
+                        UIColor.white.setFill()
+                        ctx.fill(CGRect(x: 0, y: 0, width: 800, height: 800))
                     }
+                    self.camera.capturedPhoto = img
+                    self.camera.isTaken = true
                 }
-                #endif
+                return
+            }
+            #endif
+
+            camera.check()
         }
+
         .alert(isPresented: $camera.alert) {
             Alert(
                 title: Text("Camera access denied"),

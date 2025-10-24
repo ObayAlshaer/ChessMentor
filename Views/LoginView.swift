@@ -22,6 +22,8 @@ struct LoginView: View {
                 NavigationLink (destination: ScanningView()){
                     actionButton
                 }
+                .accessibilityIdentifier("GetStartedLink")   // <- attach to the link itself
+
                 
                 learnMoreText
             }
