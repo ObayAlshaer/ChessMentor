@@ -34,6 +34,7 @@
 		449F77022D973F7100AAAAD7 /* Exceptions for "Views" folder in "chessMentor" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				LiveAnalysisView.swift,
 				LoginView.swift,
 				ResultsView.swift,
 				ScanningView.swift,

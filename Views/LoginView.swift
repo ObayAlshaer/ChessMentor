@@ -22,10 +22,19 @@ struct LoginView: View {
                 NavigationLink (destination: ScanningView()){
                     actionButton
                 }
-                .accessibilityIdentifier("GetStartedLink")   // <- attach to the link itself
+                .accessibilityIdentifier("GetStartedLink")
 
-                
                 learnMoreText
+                NavigationLink {
+                                    LiveAnalysisView()
+                                } label: {
+                                    Label("Live Analysis (No Photos)", systemImage: "camera.viewfinder")
+                                        .font(.headline)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
+                                }
+                                .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(backgroundColor)
