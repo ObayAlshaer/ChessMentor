@@ -7,7 +7,6 @@ struct BoardDetectorAdapter: BoardDetector {
     private static let log = Logger(subsystem: Bundle.main.bundleIdentifier ?? "chessmentor",
                                     category: "LiveBoardDetector")
 
-    // Services
     private let cropper: BoardCropper
     private let roboflow: RoboflowClient
     private let fenBuilder = FenBuilder()
@@ -43,37 +42,34 @@ struct BoardDetectorAdapter: BoardDetector {
     func detect(from pixelBuffer: CVPixelBuffer) throws -> DetectedBoard? {
         guard let uiImage = UIImage(pixelBuffer: pixelBuffer) else { return nil }
 
-        // 1) Crop board (internally does RF board-detect)
-        let cropped = try cropper.crop(uiImage)  // 800x800
+        // 1) Crop (get rect + source size for mapping back)
+        let r = try cropper.cropWithRect(uiImage) // returns 800x800 + cropRect + sourceSize
 
-        // 2) Detect pieces (Roboflow) — bridge async -> sync
-        let raw = try awaitDetectPieces(on: cropped)
+        // 2) Detect pieces on cropped board
+        let raw = try awaitDetectPieces(on: r.cropped)
         if raw.isEmpty { return nil }
 
-        // 3) Filter + build FEN
-        let preds = filter.apply(raw, imageSize: cropped.size)
-        let fen = fenBuilder.fen(from: preds, imageSize: cropped.size)
+        // 3) Filter + FEN
+        let preds = filter.apply(raw, imageSize: r.cropped.size)
+        let fen = fenBuilder.fen(from: preds, imageSize: r.cropped.size)
 
         let check = validator.isLikelyValid(fen)
-        guard check.ok else {
-            Self.log.error("Live FEN invalid: \(check.reason ?? "Unknown")")
-            return nil
-        }
-        return DetectedBoard(fen: fen, cropped: cropped)
-    }
+        guard check.ok else { return nil }
 
-    // MARK: - Helpers
+        return DetectedBoard(
+            fen: fen,
+            cropped: r.cropped,
+            cropRectInSource: r.rectInSource,
+            sourcePixelSize: r.sourceSize
+        )
+    }
 
     private func awaitDetectPieces(on image: UIImage) throws -> [Prediction] {
         var out: Result<[Prediction], Error>!
         let sem = DispatchSemaphore(value: 0)
         Task {
-            do {
-                let preds = try await roboflow.detect(on: image)
-                out = .success(preds)
-            } catch {
-                out = .failure(error)
-            }
+            do { out = .success(try await roboflow.detect(on: image)) }
+            catch { out = .failure(error) }
             sem.signal()
         }
         sem.wait()
@@ -84,7 +80,7 @@ struct BoardDetectorAdapter: BoardDetector {
     }
 }
 
-// Convert CVPixelBuffer -> UIImage
+// CVPixelBuffer -> UIImage
 private extension UIImage {
     convenience init?(pixelBuffer: CVPixelBuffer) {
         let ci = CIImage(cvPixelBuffer: pixelBuffer)

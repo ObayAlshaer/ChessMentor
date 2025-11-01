@@ -19,12 +19,6 @@ struct LoginView: View {
                         descriptionText
                     }
                 }
-                NavigationLink (destination: ScanningView()){
-                    actionButton
-                }
-                .accessibilityIdentifier("GetStartedLink")
-
-                learnMoreText
                 NavigationLink {
                                     LiveAnalysisView()
                                 } label: {
@@ -35,6 +29,12 @@ struct LoginView: View {
                                         .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
                                 }
                                 .padding(.horizontal)
+                NavigationLink (destination: ScanningView()){
+                    actionButton
+                }
+                .accessibilityIdentifier("GetStartedLink")
+
+                learnMoreText
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(backgroundColor)

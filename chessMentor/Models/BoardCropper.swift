@@ -28,14 +28,6 @@ class BoardCropper {
     private let padFrac: CGFloat
     private let enforceSquare: Bool
 
-    /// - Parameters:
-    ///   - apiKey: Roboflow API key
-    ///   - boardModelId: e.g. "chessboard-detection-x5kxd/1"
-    ///   - confidence: detector threshold (0.2–0.3 good)
-    ///   - overlap: NMS IoU (0.15–0.25 good)
-    ///   - maxLongSide: optional downscale before upload (keeps things fast)
-    ///   - padFrac: add a little padding around the detected box (e.g. 5%)
-    ///   - enforceSquare: expand to a square crop (recommended for 8×8 mapping)
     init(apiKey: String,
          boardModelId: String = "chessboard-detection-x5kxd/1",
          confidence: Double = 0.25,
@@ -48,27 +40,39 @@ class BoardCropper {
         self.maxLongSide = maxLongSide
         self.padFrac = padFrac
         self.enforceSquare = enforceSquare
-        // dedicated RF client for the board model
         self.rf = RoboflowClient(apiKey: apiKey,
                                  modelId: boardModelId,
                                  confidence: confidence,
                                  overlap: overlap)
     }
 
-    /// Crop the board and return a square 800×800 image.
+    /// Original behavior (used by the photo flow)
     func crop(_ image: UIImage) throws -> UIImage {
+        let r = try cropWithRect(image)
+        return r.cropped
+    }
+
+    /// NEW: also returns the crop rect in the (possibly downscaled) source coordinates,
+    /// plus the source size, so you can map back to the full camera frame.
+    struct CropResult {
+        let cropped: UIImage            // 800x800
+        let rectInSource: CGRect        // where that 800x800 came from (in `src.size` coords)
+        let sourceSize: CGSize          // size of `src` (after fixedOrientation+downscale)
+    }
+
+    func cropWithRect(_ image: UIImage) throws -> CropResult {
         // 1) Canonicalize (EXIF/rotation) and lightly downscale
         let src = image.fixedOrientationUp().downscaledIfNeeded(maxLongSide: maxLongSide)
         cropLog.info("RF crop start. input=\(Int(src.size.width))x\(Int(src.size.height)) model=\(self.boardModelId, privacy: .public)")
 
-        // 2) Detect board on THIS SAME image (our RF client rescales preds to this size)
+        // 2) Detect board on THIS SAME image (RF returns coords in this image space)
         let preds = try awaitDetect(on: src)
         guard let best = preds.max(by: { ($0.confidence ?? 0) < ($1.confidence ?? 0) }) else {
             cropLog.error("No detections from Roboflow.")
             throw CropError.noDetection
         }
 
-        // 3) Build padded rect from center/width/height (already in our image coords)
+        // 3) Build padded rect
         var rect = CGRect(x: best.x - best.width/2,
                           y: best.y - best.height/2,
                           width: best.width,
@@ -78,22 +82,21 @@ class BoardCropper {
         let padH = rect.height * padFrac
         rect = rect.insetBy(dx: -padW, dy: -padH)
 
-        // 4) Expand to square if requested (centered on detection)
+        // 4) Expand to square if requested (centered)
         if enforceSquare {
             let side = max(rect.width, rect.height)
             let cx = rect.midX, cy = rect.midY
             rect = CGRect(x: cx - side/2, y: cy - side/2, width: side, height: side)
         }
 
-        // 5) Clamp to image bounds
+        // 5) Clamp
         rect = rect.clamped(to: CGRect(origin: .zero, size: src.size))
-
         guard rect.width > 2, rect.height > 2 else {
             cropLog.error("Crop rect too small after clamp: \(NSCoder.string(for: rect))")
             throw CropError.noDetection
         }
 
-        // 6) Render crop and scale to 800×800 (no warp, no flips)
+        // 6) Render crop and scale to 800×800
         let cropped = UIGraphicsImageRenderer(size: rect.size).image { _ in
             src.draw(in: CGRect(x: -rect.origin.x,
                                 y: -rect.origin.y,
@@ -103,12 +106,11 @@ class BoardCropper {
         let scaled = cropped.resized(to: outputSize)
 
         cropLog.info("RF crop success. output=\(Int(scaled.size.width))x\(Int(scaled.size.height))")
-        return scaled
+        return CropResult(cropped: scaled, rectInSource: rect, sourceSize: src.size)
     }
 
     // MARK: - Private
 
-    /// Use async/await safely from a non-async API surface.
     private func awaitDetect(on image: UIImage) throws -> [Prediction] {
         var out: Result<[Prediction], Error>!
         let sem = DispatchSemaphore(value: 0)
@@ -129,7 +131,7 @@ class BoardCropper {
     }
 }
 
-// MARK: - Helpers
+// MARK: - Helpers (unchanged)
 
 private extension CGRect {
     func clamped(to bounds: CGRect) -> CGRect {
@@ -138,10 +140,8 @@ private extension CGRect {
         if r.minY < bounds.minY { r.origin.y = bounds.minY }
         if r.maxX > bounds.maxX { r.origin.x = bounds.maxX - r.width }
         if r.maxY > bounds.maxY { r.origin.y = bounds.maxY - r.height }
-        // in case width/height exceed bounds
         r.size.width  = min(r.width,  bounds.width)
         r.size.height = min(r.height, bounds.height)
-        // re-clamp origin after shrinking
         if r.minX < bounds.minX { r.origin.x = bounds.minX }
         if r.minY < bounds.minY { r.origin.y = bounds.minY }
         return r
