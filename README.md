@@ -26,11 +26,11 @@ Special thanks to the contributors and maintainers of ARKit and SwiftUI for thei
 
 | Name                | Student Number | Time spent |        Email        |
 |---------------------|----------------|------------|---------------------|
-| Mohamed-Obay Alshaer | 300170489     |  25 hours  | malsh094@uottawa.ca |
-| Sam Touahri         | 300234041      |  25 hours  | otoua046@uottawa.ca |
-| Justin Bushfield    | 300188318      |  25 hours  | jbush023@uottawa.ca |
-| Samuel Rose          | 300173591     |  25 hours  | srose096@uottawa.ca |
-| Anas Hammou          | 300220367     |  25 hours  | ahamm073@uottawa.ca |
+| Mohamed-Obay Alshaer | 300170489     |  100 hours  | malsh094@uottawa.ca |
+| Sam Touahri         | 300234041      |  100 hours  | otoua046@uottawa.ca |
+| Justin Bushfield    | 300188318      |  100 hours  | jbush023@uottawa.ca |
+| Samuel Rose          | 300173591     |  100 hours  | srose096@uottawa.ca |
+| Anas Hammou          | 300220367     |  100 hours  | ahamm073@uottawa.ca |
 
 ## Client Information 
 
