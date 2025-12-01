@@ -27,12 +27,14 @@
 		A82E7EA32D5BDC7300DBE5A2 /* chessMentor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chessMentor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A82E7EA42D5BDC7300DBE5A2 /* chessMentorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chessMentorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A82E7EA52D5BDC7300DBE5A2 /* chessMentorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chessMentorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A87C434C2E86FC16007024B9 /* chessMentor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = chessMentor.xcodeproj; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		449F77022D973F7100AAAAD7 /* Exceptions for "Views" folder in "chessMentor" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				LiveAnalysisView.swift,
 				LoginView.swift,
 				ResultsView.swift,
 				ScanningView.swift,
@@ -105,6 +107,7 @@
 		A82E7DF52D57A1F700DBE5A2 = {
 			isa = PBXGroup;
 			children = (
+				A87C434C2E86FC16007024B9 /* chessMentor.xcodeproj */,
 				449F77012D973F6900AAAAD7 /* Views */,
 				A82E7E002D57A1F700DBE5A2 /* chessMentor */,
 				A82E7E112D57A1FA00DBE5A2 /* chessMentorTests */,
@@ -113,6 +116,11 @@
 				A82E7EA42D5BDC7300DBE5A2 /* chessMentorTests.xctest */,
 				A82E7EA52D5BDC7300DBE5A2 /* chessMentorUITests.xctest */,
 			);
+			sourceTree = "<group>";
+		};
+		A8F50ECB2E997E320075078E /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,6 +229,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A82E7DF52D57A1F700DBE5A2;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A8F50ECB2E997E320075078E /* Products */;
+					ProjectRef = A87C434C2E86FC16007024B9 /* chessMentor.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				A82E7DFD2D57A1F700DBE5A2 /* chessMentor */,
@@ -419,7 +433,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"chessMentor/Preview Content\"";
-				DEVELOPMENT_TEAM = 2KX24F547H;
+				DEVELOPMENT_TEAM = KGKF2G8B98;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chessMentor/Info.plist;
@@ -428,6 +442,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -449,7 +464,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"chessMentor/Preview Content\"";
-				DEVELOPMENT_TEAM = 2KX24F547H;
+				DEVELOPMENT_TEAM = KGKF2G8B98;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chessMentor/Info.plist;
@@ -458,6 +473,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -475,10 +491,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KGKF2G8B98;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chessMentor.chessMentorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -493,10 +511,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KGKF2G8B98;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chessMentor.chessMentorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -512,7 +532,9 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KGKF2G8B98;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chessMentor.chessMentorUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -528,7 +550,9 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KGKF2G8B98;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chessMentor.chessMentorUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

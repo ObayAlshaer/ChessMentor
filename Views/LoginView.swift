@@ -19,10 +19,21 @@ struct LoginView: View {
                         descriptionText
                     }
                 }
+                NavigationLink {
+                                    LiveAnalysisView()
+                                } label: {
+                                    Label("Live Analysis (No Photos)", systemImage: "camera.viewfinder")
+                                        .font(.headline)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
+                                }
+                                .padding(.horizontal)
                 NavigationLink (destination: ScanningView()){
                     actionButton
                 }
-                
+                .accessibilityIdentifier("GetStartedLink")
+
                 learnMoreText
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -60,6 +71,7 @@ struct LoginView: View {
         .cornerRadius(13)
         .foregroundColor(.white)
         .font(Font.custom("SFProDisplay-Regular", size: 24))
+        .accessibilityIdentifier("GetStartedButton")
     }
 
     private var learnMoreText: some View {

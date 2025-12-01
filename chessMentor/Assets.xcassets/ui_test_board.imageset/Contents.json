@@ -1,12 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "IMG_4293.HEIC",
+      "filename" : "ui_test_board.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ui_test_board.jpg",
       "idiom" : "universal",
       "scale" : "2x"
     },
