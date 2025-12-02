@@ -28,6 +28,11 @@
 		A82E7EA42D5BDC7300DBE5A2 /* chessMentorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chessMentorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A82E7EA52D5BDC7300DBE5A2 /* chessMentorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chessMentorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A87C434C2E86FC16007024B9 /* chessMentor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = chessMentor.xcodeproj; sourceTree = SOURCE_ROOT; };
+		B1C641F92EDD65AC00A0E3E9 /* TEST_COVERAGE_REPORT.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TEST_COVERAGE_REPORT.md; sourceTree = "<group>"; };
+		B1C641FA2EDD65DC00A0E3E9 /* TESTING_QUICK_START.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TESTING_QUICK_START.md; sourceTree = "<group>"; };
+		B1C641FD2EDD67D700A0E3E9 /* HOW_TO_FIX_COVERAGE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = HOW_TO_FIX_COVERAGE.md; sourceTree = "<group>"; };
+		B1C641FF2EDD682100A0E3E9 /* README_COVERAGE_FIX.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README_COVERAGE_FIX.md; sourceTree = "<group>"; };
+		B1C642A22EDE834F00A0E3E9 /* NEW_TESTS_DOCUMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = NEW_TESTS_DOCUMENTATION.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -115,6 +120,11 @@
 				A82E7EA32D5BDC7300DBE5A2 /* chessMentor.app */,
 				A82E7EA42D5BDC7300DBE5A2 /* chessMentorTests.xctest */,
 				A82E7EA52D5BDC7300DBE5A2 /* chessMentorUITests.xctest */,
+				B1C641F92EDD65AC00A0E3E9 /* TEST_COVERAGE_REPORT.md */,
+				B1C641FA2EDD65DC00A0E3E9 /* TESTING_QUICK_START.md */,
+				B1C641FD2EDD67D700A0E3E9 /* HOW_TO_FIX_COVERAGE.md */,
+				B1C641FF2EDD682100A0E3E9 /* README_COVERAGE_FIX.md */,
+				B1C642A22EDE834F00A0E3E9 /* NEW_TESTS_DOCUMENTATION.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -433,10 +443,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"chessMentor/Preview Content\"";
-				DEVELOPMENT_TEAM = KGKF2G8B98;
+				DEVELOPMENT_TEAM = 6BP95QHN5B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chessMentor/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to access your camera to scan the chessboard";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We save the cropped chessboard image so you can verify detections.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -448,7 +460,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chessMentor.chessMentor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.obay2002.ChessMentor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -464,10 +476,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"chessMentor/Preview Content\"";
-				DEVELOPMENT_TEAM = KGKF2G8B98;
+				DEVELOPMENT_TEAM = 6BP95QHN5B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chessMentor/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to access your camera to scan the chessboard";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We save the cropped chessboard image so you can verify detections.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -479,7 +493,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chessMentor.chessMentor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.obay2002.ChessMentor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -494,11 +508,11 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KGKF2G8B98;
+				DEVELOPMENT_TEAM = 6BP95QHN5B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chessMentor.chessMentorTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.obay2002.ChessMentorTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -514,11 +528,11 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KGKF2G8B98;
+				DEVELOPMENT_TEAM = 6BP95QHN5B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chessMentor.chessMentorTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.obay2002.ChessMentorTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -532,11 +546,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KGKF2G8B98;
+				DEVELOPMENT_TEAM = 6BP95QHN5B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chessMentor.chessMentorUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.obay2002.ChessMentorUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
