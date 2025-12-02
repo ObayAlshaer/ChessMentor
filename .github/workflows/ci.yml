@@ -1,20 +1,16 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   build-and-test:
     name: Build & Test
     runs-on: macos-15
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        # Removed: submodules: true
 
       - name: Set up Xcode
         uses: maxim-lobanov/setup-xcode@v1
@@ -30,6 +26,8 @@ jobs:
             CODE_SIGNING_ALLOWED=NO
 
       - name: Run Unit Tests
+        env:
+          CI: true
         run: |
           xcodebuild test \
             -scheme chessMentor \
