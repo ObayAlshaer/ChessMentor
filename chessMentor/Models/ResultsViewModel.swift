@@ -228,11 +228,4 @@ final class ResultsViewModel: ObservableObject {
     }
 }
 
-// MARK: - AnalysisResult (used by your ResultsView)
-//struct AnalysisResult {
-//    let cropped: UIImage
-//    let overlays: UIImage?
-//    let fen: String
-//    let bestMove: BestMove
-//    let finalImage: UIImage
-//}
+// MARK: - AnalysisResult (defined in Models.swift)

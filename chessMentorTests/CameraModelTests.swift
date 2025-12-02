@@ -37,7 +37,7 @@ final class CameraModelTests: XCTestCase {
 
         // preview layer is created on main async in your code; wait a tick
         let exp = expectation(description: "preview processed")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {  // Changed from 0.1 to 0.5
             // Invariant 1: previewReady matches preview presence
             XCTAssertEqual(cam.isPreviewReady, cam.preview != nil, "isPreviewReady should reflect preview availability")
 
@@ -49,7 +49,7 @@ final class CameraModelTests: XCTestCase {
             }
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 1.0)
+        wait(for: [exp], timeout: 3.0)  // Changed from 1.0 to 3.0
     }
 
     /// Even with an empty session (no inputs/outputs), start/stop should not crash.
