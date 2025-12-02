@@ -14,8 +14,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          submodules: true
+        # Removed: submodules: true
 
       - name: Set up Xcode
         uses: maxim-lobanov/setup-xcode@v1
