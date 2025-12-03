@@ -22,10 +22,8 @@ Contains all annotated chessboard datasets, preprocessing pipelines, and model v
   https://github.com/ObayAlshaer/ChessMentor-ML/tree/main  
 
 Includes:
-- YOLO training scripts  
-- Data preprocessing  
-- FEN generation tools  
-- Validation and benchmarking notebooks  
+- Simulation notebooks 
+- Data preprocessing   
 
 ---
 
@@ -40,7 +38,7 @@ Provides:
 
 ---
 
-### 🧩 High-Level Architecture
+###  High-Level Architecture
 
 ```text
           [iOS App UI]
