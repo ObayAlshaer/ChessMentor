@@ -3,6 +3,64 @@
 
 ChessMentor is an innovative iOS app that leverages augmented reality (AR) technology to analyze chess games and provide strategic move suggestions. By simply holding your device's camera above a chessboard, the app overlays helpful insights and recommendations directly onto the board, empowering players to make informed decisions and improve their gameplay.
 
+### 🔗 Linked Repositories (Project Architecture)
+ChessMentor is composed of multiple specialized repositories.  
+This main repository serves as the **central hub**, while the following linked components handle data, ML training, and backend engine logic:
+
+---
+
+#### 📘 1. Dataset & Annotation (Roboflow)
+- **Roboflow Workspace:**  
+  https://universe.roboflow.com/chessmentor/chessmentor  
+
+Contains all annotated chessboard datasets, preprocessing pipelines, and model versions used during training.
+
+---
+
+#### 🤖 2. Machine Learning Model (YOLOv11s Training)
+- **ChessMentor-ML Repository:**  
+  https://github.com/ObayAlshaer/ChessMentor-ML/tree/main  
+
+Includes:
+- YOLO training scripts  
+- Data preprocessing  
+- FEN generation tools  
+- Validation and benchmarking notebooks  
+
+---
+
+#### ♟️ 3. Stockfish Evaluation API
+- **Stockfish Flask API (Python):**  
+  https://github.com/otoua046/stockfish-api  
+
+Provides:
+- REST endpoint for Stockfish best-move evaluation  
+- Return format used by the iOS app  
+- Engine configuration and depth settings  
+
+---
+
+### 🧩 High-Level Architecture
+
+```text
+          [iOS App UI]
+                |
+                v
+     [Chessboard Scanner (Swift)]
+                |
+                v
+      [Roboflow Inference API]
+                |
+                v
+       [FEN Generator Logic]
+                |
+                v
+     [Stockfish Flask API Server]
+                |
+                v
+       [Best Move Suggestion]
+```
+
 ## Features
 
 - **Augmented Reality Chess Analysis**: Utilize AR technology to analyze chess positions in real-time.
@@ -37,4 +95,3 @@ Special thanks to the contributors and maintainers of ARKit and SwiftUI for thei
 | Name                | Affiliation    | Email                  |
 |---------------------|----------------|------------------------|
 |Omar Al-Dib          | CUSmile (Charity) | mromaldib@gmail.com    |
-
