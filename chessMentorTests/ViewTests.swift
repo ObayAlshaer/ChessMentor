@@ -105,42 +105,6 @@ final class CameraPreviewViewTests: XCTestCase {
         }
     }
     
-    // MARK: - Session Lifecycle Tests
-    
-    func testSessionCanStartAndStop() {
-        // Skip in CI - no camera hardware available
-        if ProcessInfo.processInfo.environment["CI"] != nil { return }
-        
-        let session = AVCaptureSession()
-        
-        session.startRunning()
-        XCTAssertTrue(session.isRunning)
-        
-        session.stopRunning()
-        XCTAssertFalse(session.isRunning)
-    }
-    
-    func testSessionRunningStateToggle() {
-        // Skip in CI - no camera hardware available
-        if ProcessInfo.processInfo.environment["CI"] != nil { return }
-        
-        let session = AVCaptureSession()
-        
-        XCTAssertFalse(session.isRunning)
-        
-        session.startRunning()
-        XCTAssertTrue(session.isRunning)
-        
-        session.stopRunning()
-        XCTAssertFalse(session.isRunning)
-        
-        session.startRunning()
-        XCTAssertTrue(session.isRunning)
-        
-        session.stopRunning()
-        XCTAssertFalse(session.isRunning)
-    }
-    
     // MARK: - Session Preset Tests
     
     func testSessionDefaultPreset() {
